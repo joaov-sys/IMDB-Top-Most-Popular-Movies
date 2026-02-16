@@ -12,7 +12,11 @@ MAX_THREADS = 50
 
 def extract_movie_details(movie_link):
     time.sleep(random.uniform(0, 0.2))
-    response = requests.get(movie_link, headers=headers)
+    response = requests.get(movie_link, headers=headers, timeout=10)
+
+if response.status_code != 200:
+    return
+
     movie_soup = BeautifulSoup(response.content, 'html.parser')
 
     if movie_soup is not None:
@@ -67,7 +71,12 @@ def main():
 
     # IMDB Most Popular Movies - 100 movies
     popular_movies_url = 'https://www.imdb.com/chart/moviemeter/?ref_=nv_mv_mpm'
-    response = requests.get(popular_movies_url, headers=headers)
+    response = requests.get(popular_movies_url, headers=headers, timeout=10)
+
+if response.status_code != 200:
+    print("Erro ao acessar página principal")
+    return
+
     soup = BeautifulSoup(response.content, 'html.parser')
 
     # Main function to extract the 100 movies from IMDB Most Popular Movies
